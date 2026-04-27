@@ -1,0 +1,21 @@
+<!-- <input [(ngModel)]="hero.id"
+    type="text" placeholder="ID"> -->
+
+<div class="edit-page">
+    <button (click)="goBack()" class="btn-back">← Indietro</button>
+    
+    <div class="edit-container">
+        <h1>Inserisci/modifica un eroe</h1>
+        <input [(ngModel)]="hero.nome"
+            type="text" placeholder="Nome">
+        <br>
+        <br>
+        <input [(ngModel)]="hero.potere"
+            type="text" placeholder="Potere">
+        <br>
+        <br>
+        <button (click)="salvaHero()" style='margin-right:16px' class="btn-save">Salva</button>
+
+        <button (click)="reset()" class="btn-reset">Reset</button>
+    </div>
+</div>
