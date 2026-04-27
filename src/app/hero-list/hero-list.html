@@ -1,6 +1,6 @@
 <div class="container" style="text-align: center;">
     <h1>Mission Control Center</h1>
-    <button (click)="addHero()">Aggiungi Eroe</button>
+    <button (click)="addHero()" class="add-btn">Aggiungi Eroe</button>
     <div class="card-grid">
         <app-hero-card
             *ngFor="let h of heroService.heroes()"
