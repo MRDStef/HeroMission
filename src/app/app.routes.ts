@@ -4,7 +4,7 @@ import { HeroEdit } from './hero-edit/hero-edit';
 
 export const routes: Routes = [
   { path: '', component: HeroList },
-  { path: 'edit/:id', component: HeroEdit }
+  { path: 'edit/:_id', component: HeroEdit }
 ];
 
 

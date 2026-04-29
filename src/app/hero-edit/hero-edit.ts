@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Hero } from '../hero.model';
 import { HeroService } from '../model/hero';
+import { Hero } from '../model/hero.model';
 
 @Component({
   selector: 'app-hero-edit',
@@ -13,7 +13,6 @@ import { HeroService } from '../model/hero';
 })
 export class HeroEdit implements OnInit {
   hero: Hero = {
-    id: -1,
     nome: '',
     potere: '',
     completata: false
@@ -26,12 +25,19 @@ export class HeroEdit implements OnInit {
   ) { }
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      const foundHero = this.heroService.getHeroById(Number(id));
-      if (foundHero) {
-        this.hero = { ...foundHero };
-      }
+    const _id = this.route.snapshot.paramMap.get('_id');
+    if (_id && _id !== 'new') {
+      this.heroService.getHeroById(_id).subscribe({
+        next: (foundHero) => {
+          console.log('Hero trovato:', foundHero);
+          if (foundHero) {
+            this.hero = { ...foundHero };
+          }
+        },
+        error: (error) => {
+          console.error('Errore nel caricamento del hero:', error);
+        }
+      });
     }
   }
 
@@ -41,19 +47,33 @@ export class HeroEdit implements OnInit {
       return;
     }
 
-    if (this.hero.id === -1) {
-      this.heroService.addHero(this.hero);
+    if (!this.hero._id) {
+      this.heroService.createHero(this.hero).subscribe({
+        next: (response) => {
+          this.router.navigate(['']);
+        },
+        error: (error) => {
+          alert("Errore nel salvataggio dell'eroe");
+          console.error(error);
+        }
+      });
     } else {
-      this.heroService.updateHero(this.hero);
+      this.heroService.updateHero(this.hero._id, this.hero).subscribe({
+        next: (response) => {
+          this.router.navigate(['']);
+        },
+        error: (error) => {
+          alert("Errore nell'aggiornamento dell'eroe");
+          console.error(error);
+        }
+      });
     }
-
-    this.router.navigate(['']);
   }
 
   reset() {
-    if (this.hero.id !== -1) {
+    if (this.hero._id) {
       this.hero = {
-        id: this.hero.id,
+        _id: this.hero._id,
         nome: "",
         potere: "",
         completata: false
@@ -61,7 +81,6 @@ export class HeroEdit implements OnInit {
     }
     else {
       this.hero = {
-        id: -1,
         nome: "",
         potere: "",
         completata: false

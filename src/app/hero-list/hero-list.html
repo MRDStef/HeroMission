@@ -3,7 +3,7 @@
     <button (click)="addHero()" class="add-btn">Aggiungi Eroe</button>
     <div class="card-grid">
         <app-hero-card
-            *ngFor="let h of heroService.heroes()"
+            *ngFor="let h of heroes()"
             [hero]="h"
             (onMissionDone)="mark($event)"
             (onEdit)="editHero($event)">
